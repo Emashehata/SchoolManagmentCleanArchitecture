@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build outputs
+**/bin/
+**/obj/
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Local secrets
+.env
+.env.*
+**/appsettings.Development.json
