@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Infrastructure;
-using SchoolProject.Infrastructure.Abstraction.Interfaces;
+ 
 using SchoolProject.Infrastructure.Data;
-using SchoolProject.Infrastructure.Repositories;
+using SchoolProject.Core;
 using SchoolProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,20 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
 });
-builder.Services.AddInfrastructureDependency();
-builder.Services.AddServiceDependency();
+builder.Services.AddInfrastructureDependency()
+                .AddServiceDependency()
+                .AddCoreDependency();
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
  
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

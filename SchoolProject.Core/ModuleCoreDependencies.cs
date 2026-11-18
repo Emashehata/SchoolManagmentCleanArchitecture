@@ -5,12 +5,23 @@ namespace SchoolProject.Core
 {
     public static class ModuleCoreDependencies
     {
-        public static IServiceCollection AddCoreeDependency(this IServiceCollection services)
+        
+        public static IServiceCollection AddCoreDependency(this IServiceCollection services)
         {
+            #region configration of mediator
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-                return services;
+            
+            #endregion
+            #region configration of automapper
+            services.AddAutoMapper(
+                cfg => { },
+                Assembly.GetExecutingAssembly());
+            return services;
+            #endregion
+
         }
+
 
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SchoolProject.Infrastructure.Abstraction.Interfaces;
+using SchoolProject.Infrastructure.InfrastructureBases;
 using SchoolProject.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
+ 
 
 namespace SchoolProject.Infrastructure
 {
@@ -12,6 +11,8 @@ namespace SchoolProject.Infrastructure
         public static IServiceCollection AddInfrastructureDependency(this IServiceCollection services) 
         {
             services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            
             return services;
         }
     }
