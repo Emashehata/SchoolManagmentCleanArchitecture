@@ -1,21 +1,17 @@
-﻿using Azure;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using MediatR;
+using SchoolProject.Core.Bases;
 
 namespace SchoolProject.Core.Features.Students.Commands.Models
 {
-    public class AddStudentCommand:IRequest<Response<>>
+    public class AddStudentCommand : IRequest<Response<string>>
     {
-        [Required]
+
         public string Name { get; set; }
-        [Required]
+
         public string Address { get; set; }
-        [StringLength(500)]
+
         public string Phone { get; set; }
-        public int DepartmentId {  get; set; }
+        public int DepartmentId { get; set; }
 
     }
 }

@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using SchoolProject.Infrastructure;
- 
-using SchoolProject.Infrastructure.Data;
 using SchoolProject.Core;
+using SchoolProject.Core.Middleware;
+using SchoolProject.Infrastructure;
+
+using SchoolProject.Infrastructure.Data;
 using SchoolProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ builder.Services.AddInfrastructureDependency()
                 .AddCoreDependency();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
- 
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

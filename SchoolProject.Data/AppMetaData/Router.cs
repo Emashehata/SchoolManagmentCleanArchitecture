@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SchoolProject.Data.AppMetaData
+﻿namespace SchoolProject.Data.AppMetaData
 {
     public static class Router
     {
-        public const string singleRoute="/{id}";
+        public const string singleRoute = "/{id}";
         public const string root = "Api";
         public const string version = "V1";
 
@@ -15,7 +11,9 @@ namespace SchoolProject.Data.AppMetaData
         {
             public const string Prefix = Rule + "Student";
             public const string List = Prefix + "List";
-            public const string GetById = Prefix +  singleRoute;
+            public const string GetById = Prefix + singleRoute;
+            public const string Create = Prefix + "/Create";
+            public const string Edit = Prefix + "/Edit";
         }
     }
 }

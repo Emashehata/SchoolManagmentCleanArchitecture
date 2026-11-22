@@ -2,9 +2,6 @@
 using SchoolProject.Data.Entities;
 using SchoolProject.Infrastructure.Abstraction.Interfaces;
 using SchoolProject.Service.Abstraction;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SchoolProject.Service.Implemeentaions
 {
@@ -24,18 +21,43 @@ namespace SchoolProject.Service.Implemeentaions
         public async Task<Student> GetStudentByIdAsync(int stdId)
         {
             //var student= await _studentRepository.GetStudentByIdAsync(stdId);
-            var student=_studentRepository.GetTableNoTracking().Include(x=>x.Department)
-                                                                .Where(x=>x.StudID.Equals(stdId))
+            var student = _studentRepository.GetTableNoTracking().Include(x => x.Department)
+                                                                .Where(x => x.StudID.Equals(stdId))
                                                                 .FirstOrDefault();
             return student;
         }
 
         public async Task<string> AddStuentAsync(Student student)
         {
-            var studentRes = _studentRepository.GetTableNoTracking()
-                                          .Where(x => x.Name.Equals(student.Name));
-            if (studentRes != null)  return "Exist";
+            var studentExists = await _studentRepository
+                .GetTableNoTracking()
+                .AnyAsync(x => x.Name == student.Name);
+
+            if (studentExists)
+                return "Exist";
+
             await _studentRepository.AddAsync(student);
+
+            return "Success";
+        }
+
+        public async Task<bool> IsNameExist(string name)
+        {
+            var student = _studentRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            if (student == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsNameExistExcludeSelf(string name, int id)
+        {
+            var student = await _studentRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.StudID.Equals(id)).FirstOrDefaultAsync();
+            if (student == null) return false;
+            return true;
+        }
+
+        public async Task<string> EditStudentAsync(Student student)
+        {
+            await _studentRepository.UpdateAsync(student);
             return "Success";
         }
     }
