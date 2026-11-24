@@ -14,6 +14,7 @@
             public const string GetById = Prefix + singleRoute;
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
+            public const string Delete = Prefix + "/{id}";
         }
     }
 }

@@ -10,7 +10,8 @@ namespace SchoolProject.Core.Features.Students.Commands.Handlers
 
     public class StudentCommandHandler :
         ResponseHandler, IRequestHandler<AddStudentCommand, Response<string>>,
-        IRequestHandler<EditStudentCommand, Response<string>>
+        IRequestHandler<EditStudentCommand, Response<string>>,
+        IRequestHandler<DeleteStudentCommand, Response<string>>
     {
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
@@ -32,13 +33,22 @@ namespace SchoolProject.Core.Features.Students.Commands.Handlers
 
         public async Task<Response<string>> Handle(EditStudentCommand request, CancellationToken cancellationToken)
         {
-            var student = _studentService.GetStudentByIdAsync(request.Id);
+            var student = _studentService.GetStudentByIdWithIncludeAsync(request.Id);
             if (student == null) return NotFound<string>("Student doensot exist");
             var studentmapper = _mapper.Map<Student>(request);
             var res = await _studentService.EditStudentAsync(studentmapper);
             if (res == "Success") return Success($"Edit Successfully{studentmapper.StudID}");
             else return BadRequest<string>();
 
+        }
+
+        public async Task<Response<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+        {
+            var std = await _studentService.GetStudentByIdAsync(request.Id);
+            if (std == null) return NotFound<string>("Student doensot exist");
+            var res = await _studentService.DeleteStudentAsync(std);
+            if (res == "Success") return Deleted<string>($"Deleted Successfully {request.Id}");
+            else return BadRequest<string>();
         }
     }
 }
